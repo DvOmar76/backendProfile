@@ -19,6 +19,15 @@ Route::middleware(['guest'])->post('/auth/login', [loginController::class, 'logi
 
 //Route::middleware(['guest'])->post('/login', [loginController::class, 'store']);
 
+Route::post('/loginUser',[loginController::class,'loginUser']);
+Route::post('/registerUser',[loginController::class,'registerUser']);
+ 
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+ 
+    return ['token' => $token->plainTextToken];
+});
+
 Route::get('/info',[ProfileController::class,'index']);
 Route::apiResource('/skills',SkillController::class);
 Route::apiResource('/socials',SocialController::class);
