@@ -37,7 +37,6 @@ class CourseController extends Controller
         $data['imageUrl'] = uploadFile($request, 'imageUrl', 'courses');
         $data['certificateUrl'] =uploadFile($request, 'certificateUrl', 'courses');
 
-
         $courseDB=new Course;
         $newCourse= $courseDB->create($data);
         if ($language=='ar')
@@ -76,7 +75,21 @@ class CourseController extends Controller
             'message'=>'data updated successfully'
         ]);
     }
-
+public function show(Request $request,Course $course)
+{
+    dd($course);
+    $language= getLanguage($request);
+    $course = $course->when($language == 'ar', function ($query) {
+        $query->select('id','imageUrl','certificateUrl','titleAr as title', 'descriptionAr as description');
+    }, function ($query) {
+        $query->select('id','imageUrl','certificateUrl','titleEn as title', 'descriptionEn as description');
+    })->get();
+    $data=CourseResource::collection($course);
+    return response()->json([
+        'data'=>$data,
+        'message'=>'data returned successfully'
+    ]);
+}
     /**
      * Remove the specified resource from storage.
      */

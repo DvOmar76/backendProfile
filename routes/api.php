@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/auth/login', [loginController::class, 'login']);
+
+Route::middleware(['guest'])->post('/auth/login', [loginController::class, 'login']);
+
+//Route::middleware(['guest'])->post('/login', [loginController::class, 'store']);
+
 Route::get('/info',[ProfileController::class,'index']);
 Route::apiResource('/skills',SkillController::class);
 Route::apiResource('/socials',SocialController::class);

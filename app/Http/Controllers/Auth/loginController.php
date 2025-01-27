@@ -14,6 +14,7 @@ class loginController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+//            $request->session()->regenerate();
             return response()->json([
 //                'token' => $user->createToken('YourAppName')->plainTextToken,
                 'user' => $user
