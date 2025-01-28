@@ -21,6 +21,9 @@ Route::middleware(['guest'])->post('/auth/login', [loginController::class, 'logi
 
 Route::post('/loginUser',[loginController::class,'loginUser']);
 Route::post('/registerUser',[loginController::class,'registerUser']);
+Route::post('/validate-token',[loginController::class,'validateToken']);
+Route::post('/logout',[loginController::class,'logout']);
+
  
 Route::post('/tokens/create', function (Request $request) {
     $token = $request->user()->createToken($request->token_name);

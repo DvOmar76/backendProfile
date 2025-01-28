@@ -64,13 +64,31 @@ class loginController extends Controller
         }
 
         // Generate a new token for the user
-        $token = $user->createToken('lg', ['server:update'])->plainTextToken;
+        $token = $user->createToken('Laravel', ['server:update'])->plainTextToken;
 
         // Return the token to the client
         return response()->json([
             'message' => 'Login successful',
             'token' => $token,
         ]);
+    }
+    public function validateToken(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+    if ($user) {
+        return response()->json(['message' => 'Token is valid'], 200);
+    }
+    return response()->json(['message' => 'Token is invalid'], 401);
+    }
+    public function logout(Request $request)
+    {
+        $user = Auth::guard('sanctum')->user();
+        if ($user) {
+            // Revoke the current token
+            $user->currentAccessToken()->delete();
+            return response()->json(['message' => 'Logged out successfully'], 200);
+        }
+        return response()->json(['message' => 'User not authenticated'], 401);
     }
 
     public function registerUser(Request $request)
